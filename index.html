@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Bingo</title>
+   <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Generador de Bingo</h1>
+    <div class="bingo-container">
+        <div class="ball" id="ball">--</div>
+        <div class="buttons">
+            <button class="button" onclick="startBingo()">Iniciar</button>
+            <button class="button" onclick="stopBingo()">Detener</button>
+            <button class="button" onclick="resetGame()">Reiniciar</button>
+        </div>
+        <div>
+            <input type="text" id="inputNumbers" placeholder="Introduce números separados por coma" />
+            <button class="button" onclick="checkBingo()">Comprobar Bingo</button>
+        </div>
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="bingo-message" id="bingoMessage">
+        ¡BINGO! 🎉🎉<br>
+        <img src="../wrong.jpg" style=" height: 300px ;width: 300px;">
+    </div>
+
+    <div class="wrong-bingo-message" id="wrongBingoMessage">
+        ✘✘✘ ¿te enseño el bopa? ✘✘✘
+        <img src="../bopa.jpg" style=" height: 300px ;width: 300px;">
+    </div>
+    <script src="bingo.js"></script>
+</body>
+</html>
