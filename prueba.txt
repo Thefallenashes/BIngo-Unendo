@@ -1,1 +1,0 @@
-Documento de prueba para ver si consigo hacer cambios con Git. Lo borro ahora.
