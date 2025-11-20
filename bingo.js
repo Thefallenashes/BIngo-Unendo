@@ -1,10 +1,7 @@
-  let bingoInterval;
+let bingoInterval;
         let generatedNumbers = new Set();
 
         function startBingo() {
-            if (bingoInterval) return; // Evitar múltiples intervalos
-
-            bingoInterval = setInterval(() => {
                 let number;
                 do {
                     number = Math.floor(Math.random() * 99) + 1;
@@ -14,13 +11,8 @@
                 document.getElementById("ball").textContent = number;
                 markGridCell(number);
                 speakNumber(number);
-
-                // Detener automáticamente si ya se han generado todos los números
-                if (generatedNumbers.size === 99) {
-                    stopBingo();
-                }
-            }, 3000); // Intervalo de 3 segundos
-        }
+            }
+        
 
         function stopBingo() {
             clearInterval(bingoInterval);
