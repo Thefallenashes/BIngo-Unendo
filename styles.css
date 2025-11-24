@@ -6,21 +6,23 @@
 }
 body{
     background: url("imagenes-png/fondo.png");
-    background-size: 100% 100%;
+    background-size: 100%;
     background-repeat: no-repeat;
     margin-top: 70px;
+    background-color: #af0107;
 }
 h1{
     text-align: center;
+    margin-top: 150px;
     color: #f0e8db;
-    text-shadow:3px 1px 5px black;
     font-size: 60px;
+    text-shadow: 7px 3px 5px black;
 }
 #todo{
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin-top: 80px;
+    margin-left: 200px;
 }
 /*#divNUm{
     width: 300px;
@@ -28,24 +30,34 @@ h1{
     text-align: center;
 }*/
 #numeroMostrado{
-    margin-top: 30px;
-    border: 1px solid;
+    text-align: center;
+    margin-top: -120px;
+    margin-bottom: -120px;
+    margin-left: 50px;
+    border: 1px solid #273a1a;
     background-color: #273a1a;
     color: #f0e8db;
-    border-radius:50%;
-    padding: 70px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 500%;
     font-weight: 700;
+    text-shadow: 5px 5px 5px black;
+    border-radius:100%;
+    padding: 71px;
+    height: 100px;
+    width: 100px;
 }
+.imgBorde{
+    width: 350px;
+}
+
 #tableros{
-    width: 70%;
     height: 500px;
     display: flex;
     gap: 4%;
+    margin-bottom:px;
 }
 .tablero{
-    width: 35%;
+    width: 25%;
     height: 100%;
     border: 2px solid black;
 }
@@ -56,7 +68,6 @@ button{
     color: #f0e8db;
     border: 1px solid #f0e8db;
     border-radius: 15px;
-
 }
 input{
     height: 30px;
@@ -70,16 +81,19 @@ input{
 #botonGenerar{
     width: 130px;
     height: 80px;
-    margin-left: 50px;
+    margin-left: 107px;
+    margin-top: 30px;
     font-size: 20px;
 }
 #divComprobar{
     margin-top: 200px;
+    margin-right: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    
 }
 #botonReiniciarBingo{
-    margin-top: 50px;
+    margin-top: 20px;
 }
