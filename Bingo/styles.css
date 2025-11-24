@@ -1,0 +1,126 @@
+.open-sans{
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+}
+body{
+    background: url("imagenes-png/fondo.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-top: 70px;
+    background-color: #af0107;
+}
+h1{
+    text-align: center;
+    margin-top: 140px;
+    color: #f0e8db;
+    font-size: 60px;
+    text-shadow: 7px 3px 5px black;
+}
+#todo{
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-left: 100px;
+}
+#numeroMostrado{
+    text-align: center;
+    margin-top: -120px;
+    margin-bottom: -120px;
+    margin-left: 50px;
+    border: 1px solid #273a1a;
+    background-color: #273a1a;
+    color: #f0e8db;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 500%;
+    font-weight: 700;
+    text-shadow: 5px 5px 5px black;
+    border-radius:100%;
+    padding: 71px;
+    height: 100px;
+    width: 100px;
+}
+.imgBorde{
+    width: 350px;
+}
+
+#tableros{
+    height: 500px;
+    display: flex;
+    gap: 4%;
+}
+button{
+    width: 150px;
+    height: 30px;
+    background-color: #273a1a;
+    color: #f0e8db;
+    border: 1px solid #f0e8db;
+    border-radius: 15px;
+}
+input{
+    height: 30px;
+    width: 200px;
+    background-color: #f0e8db;
+    color: #273a1a;
+    border: 3px solid #273a1a;
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+#botonGenerar{
+    width: 130px;
+    height: 80px;
+    margin-left: 107px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+#divComprobar{
+    margin-top: 200px;
+    margin-right: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+}
+#botonReiniciarBingo{
+    margin-top: 20px;
+}
+/* Contenedor de los tableros */
+.tablero {
+    width: 30%;
+    height: 100%;
+    display: grid; /* usamos grid para cuadrícula */
+    grid-template-columns: repeat(9, 1fr); /* 9 columnas */
+    grid-auto-rows: 40px; /* altura de cada fila igual a las bolas */
+    gap: 5px; /* espacio entre bolas */
+    justify-items: center; /* centrar horizontalmente el contenido de cada celda */
+    align-items: center; /* centrar verticalmente */
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 40px;
+    margin-left: -10px;
+}
+
+/* Cada bola */
+.bola {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0e8db;
+    border: 2px solid #273a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+
+/* Bola marcada cuando sale el número */
+.marcada {
+    background-color: #ffe49c;
+    border-color: #ffb700;
+    color: #273a1a;
+}

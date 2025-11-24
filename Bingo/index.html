@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Bingo</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <h1>Bingo de Unendo</h1>
+    <div id="todo">
+        <div id="tableros">
+        <div id="tablero1" class="tablero"></div>
+            <div>
+                <div id="divNum">
+                    <img src="imagenes-png/borde1.png" class="imgBorde" id="bordeArriba">
+                    <div id="numeroMostrado"></div>
+                    <img src="imagenes-png/borde2.png" class="imgBorde" id="bordeAbajo">
+                </div>
+                <button id="botonGenerar">Sacar número</button>
+            </div>
+            <div id="tablero2" class="tablero"></div>
+        </div>
+        <div id="divComprobar">
+            <input type="text" id="bingoComprobar" placeholder="Introduce los números del cartón">
+            <button id="botonComprobar">Comprobar bingo</button>
+            <button id="botonReiniciarBingo">Reiniciar</button>
+        </div>
+    </div>
+    <script src="bingo.js"></script>
+</body>
+</html>
