@@ -1,102 +1,152 @@
-  let bingoInterval;
-        let generatedNumbers = new Set();
 
-        function startBingo() {
-            if (bingoInterval) return; // Evitar múltiples intervalos
+let numeros = [];
+const bolas1 = new Map();
+const bolas2 = new Map();
 
-            bingoInterval = setInterval(() => {
-                let number;
-                do {
-                    number = Math.floor(Math.random() * 99) + 1;
-                } while (generatedNumbers.has(number)); // Evitar números repetidos
+// Crear los 90 círculos (45 por tablero)
+function crearTableros() {
+    const t1 = document.getElementById("tablero1");
+    const t2 = document.getElementById("tablero2");
 
-                generatedNumbers.add(number);
-                document.getElementById("ball").textContent = number;
-                markGridCell(number);
-                speakNumber(number);
+    t1.innerHTML = "";
+    t2.innerHTML = "";
 
-                // Detener automáticamente si ya se han generado todos los números
-                if (generatedNumbers.size === 99) {
-                    stopBingo();
-                }
-            }, 3000); // Intervalo de 3 segundos
+    for (let i = 0; i < 45; i++) {
+
+        // Tablero 1
+        const b1 = document.createElement("div");
+        b1.className = "bola";
+        b1.id = `b1-${i}`;
+        t1.appendChild(b1);
+
+        // Tablero 2
+        const b2 = document.createElement("div");
+        b2.className = "bola";
+        b2.id = `b2-${i}`;
+        t2.appendChild(b2);
+    }
+}
+
+crearTableros();
+
+
+// Extraer un número
+function addNumeroBingo() {
+
+    if (numeros.length >= 90) {
+        alert("Ya han salido todos los números");
+        return;
+    }
+
+    let valor = Math.floor(Math.random() * 90 + 1);
+
+    while (numeros.includes(valor)) {
+        valor = Math.floor(Math.random() * 90 + 1);
+    }
+
+    numeros.push(valor);
+    document.getElementById("numeroMostrado").innerText = valor;
+
+    let pos = numeros.length - 1;
+
+    if (pos < 45) {
+        bolas1.set(pos, valor);
+        document.getElementById(`b1-${pos}`).innerText = valor;
+    } else {
+        let pos2 = pos - 45;
+        bolas2.set(pos2, valor);
+        document.getElementById(`b2-${pos2}`).innerText = valor;
+    }
+}
+
+
+
+
+function comprobarBingo() {
+    const texto = document.getElementById("bingoComprobar").value.trim();
+
+    if (texto === "") {
+        alert("Introduce números separados por comas");
+        return;
+    }
+
+    const entradas = texto.split(",");
+    const numsInput = [];
+
+    for (let p of entradas) {
+        const n = Number(p.trim());
+        if (isNaN(n) || n < 1 || n > 90) {
+            alert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
+            return;
         }
+        numsInput.push(n);
+    }
 
-        function stopBingo() {
-            clearInterval(bingoInterval);
-            bingoInterval = null;
+    const todos = [...bolas1.values(), ...bolas2.values()];
+
+    for (let n of numsInput) {
+        if (!todos.includes(n)) {
+            alert("Número no encontrado: " + n);
+            return;
         }
+    }
 
-        function resetGame() {
-            generatedNumbers.clear();
-            document.getElementById("ball").textContent = "--";
-            const cells = document.querySelectorAll(".grid-cell");
-            cells.forEach(cell => {
-                cell.classList.remove("marked");
-                cell.textContent = "";
-            });
-            document.getElementById("bingoMessage").classList.remove("show");
-            document.getElementById("wrongBingoMessage").classList.remove("show");
+    if (numsInput.length === 15) {
+        alert("¡Bingo válido!");
+    } else {
+        alert("Faltan números para Bingo (deben ser 15)");
+    }
+}
+
+function comprobarLinea() {
+    const texto = document.getElementById("lineaComprobar").value.trim();
+
+    if (texto === "") {
+        alert("Introduce números separados por comas");
+        return;
+    }
+
+    const entradas = texto.split(",");
+    const numsInput = [];
+
+    for (let p of entradas) {
+        const n = Number(p.trim());
+        if (isNaN(n) || n < 1 || n > 90) {
+            alert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
+            return;
         }
+        numsInput.push(n);
+    }
 
-        function markGridCell(number) {
-            const cell = document.getElementById(`cell-${number}`);
-            if (cell) {
-                cell.classList.add("marked");
-                cell.textContent = number;
-            }
+    const todos = [...bolas1.values(), ...bolas2.values()];
+
+    for (let n of numsInput) {
+        if (!todos.includes(n)) {
+            alert("Número no encontrado: " + n);
+            return;
         }
+    }
 
-        function speakNumber(number) {
-            const utterance = new SpeechSynthesisUtterance(number.toString());
-            utterance.lang = 'gl-ES'; // Idioma en español
-            speechSynthesis.speak(utterance);
-        }
+    if (numsInput.length === 5) {
+        alert("¡Línea válida!");
+    } else {
+        alert("Faltan números para Línea (deben ser 5)");
+    }
+}
+// Reiniciar todo
+function reiniciar() {
+    numeros = [];
+    bolas1.clear();
+    bolas2.clear();
+    document.getElementById("numeroMostrado").innerText = "";
+    document.getElementById("lineaComprobar").value= "";
+    document.getElementById("bingoComprobar").value= "";
+    crearTableros();
+}
 
-        // Crear la cuadrícula de números
-        function createGrid() {
-            const gridContainer = document.getElementById("grid");
-            for (let i = 1; i <= 99; i++) {
-                const cell = document.createElement("div");
-                cell.classList.add("grid-cell");
-                cell.id = `cell-${i}`;
-                gridContainer.appendChild(cell);
-            }
-        }
 
-        // Inicializar la cuadrícula al cargar la página
-        createGrid();
-
-        // Comprobar si los números ingresados están en el conjunto generado
-        function checkBingo() {
-            const input = document.getElementById("inputNumbers").value;
-            const numbersToCheck = input.split(",").map(num => parseInt(num.trim(), 10));
-
-            const bingo = numbersToCheck.every(num => generatedNumbers.has(num));
-            
-            if (bingo) {
-                showBingoMessage();
-            } else {
-                showWrongBingoMessage();
-            }
-        }
-
-        // Mostrar mensaje de Bingo
-        function showBingoMessage() {
-            const bingoMessage = document.getElementById("bingoMessage");
-            bingoMessage.classList.add("show");
-
-            setTimeout(() => {
-                bingoMessage.classList.remove("show");
-            }, 5000); // El mensaje desaparece después de 5 segundos
-        }
-
-        // Mostrar mensaje de "Inútil"
-        function showWrongBingoMessage() {
-            const wrongBingoMessage = document.getElementById("wrongBingoMessage");
-            wrongBingoMessage.classList.add("show");
-
-            setTimeout(() => {
-                wrongBingoMessage.classList.remove("show");
-            }, 3000); // El mensaje desaparece después de 3 segundos
-        }
+// Eventos
+document.getElementById("botonGenerar").addEventListener("click", addNumeroBingo);
+document.getElementById("botonComprobar").addEventListener("click", comprobarBingo);
+document.getElementById("botonComprobarlinea").addEventListener("click", comprobarLinea);
+document.getElementById("botonReiniciarBingo").addEventListener("click", reiniciar);
