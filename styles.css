@@ -1,128 +1,85 @@
- body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-            
-            background-image: url('https://unendo.es/wp-content/uploads/2022/07/IMG-20220625-WA0005-1024x768.jpg');
-            background-size: cover; /* Hace que la imagen cubra toda la pantalla */
-            background-position: center; /* Centra la imagen */
-            background-attachment: fixed; /* Fija la imagen cuando se hace scroll */
-            margin: 0; /* Elimina márgenes por defecto */
-            height: 100vh; /* Hace que el body ocupe toda la altura de la ventana */
-        
-        }
-        h1 {
-            color: #333;
-        }
-        .bingo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        .ball {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #4a90e2;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            font-weight: bold;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        }
-        .buttons {
-            display: flex;
-            gap: 20px;
-        }
-        .button {
-            padding: 10px 20px;
-            font-size: 1em;
-            color: white;
-            background-color: #333;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #555;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
-            max-width: 500px;
-        }
-        .grid-cell {
-            width: 40px;
-            height: 40px;
-            background-color: #eee;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            font-weight: bold;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .marked {
-            background-color: #4a90e2;
-            color: white;
-        }
-        .bingo-message {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            font-size: 2em;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-        .bingo-message.show {
-            display: block;
-            animation: bounce 1s infinite;
-        }
-        .wrong-bingo-message {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ff0000;
-            color: white;
-            padding: 20px;
-            font-size: 2em;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            animation: shake 0.5s ease-in-out;
-        }
-        .wrong-bingo-message.show {
-            display: block;
-        }
-        @keyframes bounce {
-            0% { transform: translate(-50%, -50%) translateY(-20px); }
-            50% { transform: translate(-50%, -50%) translateY(10px); }
-            100% { transform: translate(-50%, -50%) translateY(-20px); }
-        }
-        @keyframes shake {
-            0% { transform: translate(-50%, -50%) translateX(-10px); }
-            25% { transform: translate(-50%, -50%) translateX(10px); }
-            50% { transform: translate(-50%, -50%) translateX(-10px); }
-            75% { transform: translate(-50%, -50%) translateX(10px); }
-            100% { transform: translate(-50%, -50%) translateX(0); }
-        }
+.open-sans{
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+}
+body{
+    background: url("imagenes-png/fondo.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: 70px;
+}
+h1{
+    text-align: center;
+    color: #f0e8db;
+    text-shadow:3px 1px 5px black;
+    font-size: 60px;
+}
+#todo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+}
+/*#divNUm{
+    width: 300px;
+    height: 300px;
+    text-align: center;
+}*/
+#numeroMostrado{
+    margin-top: 30px;
+    border: 1px solid;
+    background-color: #273a1a;
+    color: #f0e8db;
+    border-radius:50%;
+    padding: 70px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 500%;
+    font-weight: 700;
+}
+#tableros{
+    width: 70%;
+    height: 500px;
+    display: flex;
+    gap: 4%;
+}
+.tablero{
+    width: 35%;
+    height: 100%;
+    border: 2px solid black;
+}
+button{
+    width: 150px;
+    height: 30px;
+    background-color: #273a1a;
+    color: #f0e8db;
+    border: 1px solid #f0e8db;
+    border-radius: 15px;
+
+}
+input{
+    height: 30px;
+    width: 200px;
+    background-color: #f0e8db;
+    color: #273a1a;
+    border: 3px solid #273a1a;
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+#botonGenerar{
+    width: 130px;
+    height: 80px;
+    margin-left: 50px;
+    font-size: 20px;
+}
+#divComprobar{
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#botonReiniciarBingo{
+    margin-top: 50px;
+}
