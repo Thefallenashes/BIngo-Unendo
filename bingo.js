@@ -1,4 +1,3 @@
-
 let numeros = [];
 const bolas1 = new Map();
 const bolas2 = new Map();
@@ -12,7 +11,6 @@ function crearTableros() {
     t2.innerHTML = "";
 
     for (let i = 0; i < 45; i++) {
-
         // Tablero 1
         const b1 = document.createElement("div");
         b1.className = "bola";
@@ -29,12 +27,10 @@ function crearTableros() {
 
 crearTableros();
 
-
 // Extraer un número
 function addNumeroBingo() {
-
     if (numeros.length >= 90) {
-        alert("Ya han salido todos los números");
+        showAlert("Ya han salido todos los números");
         return;
     }
 
@@ -59,14 +55,12 @@ function addNumeroBingo() {
     }
 }
 
-
-
-
+// Comprobar bingo
 function comprobarBingo() {
     const texto = document.getElementById("bingoComprobar").value.trim();
 
     if (texto === "") {
-        alert("Introduce números separados por comas");
+        showAlert("Introduce números separados por comas");
         return;
     }
 
@@ -76,7 +70,7 @@ function comprobarBingo() {
     for (let p of entradas) {
         const n = Number(p.trim());
         if (isNaN(n) || n < 1 || n > 90) {
-            alert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
+            showAlert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
             return;
         }
         numsInput.push(n);
@@ -86,23 +80,27 @@ function comprobarBingo() {
 
     for (let n of numsInput) {
         if (!todos.includes(n)) {
-            alert("Número no encontrado: " + n);
+            showAlert("Número no encontrado: " + n);
             return;
         }
     }
 
+    // Aquí estaba el error: else if sin condición
     if (numsInput.length === 15) {
-        alert("¡Bingo válido!");
+        showAlert("¡Bingo válido!");
+    } else if (numsInput.length < 15) {
+        showAlert("Faltan números para Bingo (deben ser 15)");
     } else {
-        alert("Faltan números para Bingo (deben ser 15)");
+        showAlert("Demasiados números para Bingo (deben ser 15)");
     }
 }
 
+// Comprobar línea
 function comprobarLinea() {
     const texto = document.getElementById("lineaComprobar").value.trim();
 
     if (texto === "") {
-        alert("Introduce números separados por comas");
+        showAlert("Introduce números separados por comas");
         return;
     }
 
@@ -112,7 +110,7 @@ function comprobarLinea() {
     for (let p of entradas) {
         const n = Number(p.trim());
         if (isNaN(n) || n < 1 || n > 90) {
-            alert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
+            showAlert("Formato incorrecto: solo números entre 1 y 90 separados por comas");
             return;
         }
         numsInput.push(n);
@@ -122,15 +120,18 @@ function comprobarLinea() {
 
     for (let n of numsInput) {
         if (!todos.includes(n)) {
-            alert("Número no encontrado: " + n);
+            showAlert("Número no encontrado: " + n);
             return;
         }
     }
 
+    // Validación de cantidad de números
     if (numsInput.length === 5) {
-        alert("¡Línea válida!");
+        showAlert("¡Línea válida!");
+    } else if (numsInput.length < 5) {
+        showAlert("Faltan números para Línea (deben ser 5)");
     } else {
-        alert("Faltan números para Línea (deben ser 5)");
+        showAlert("Demasiados números para Línea (deben ser 5)");
     }
 }
 // Reiniciar todo
@@ -139,14 +140,29 @@ function reiniciar() {
     bolas1.clear();
     bolas2.clear();
     document.getElementById("numeroMostrado").innerText = "";
-    document.getElementById("lineaComprobar").value= "";
-    document.getElementById("bingoComprobar").value= "";
+    document.getElementById("lineaComprobar").value = "";
+    document.getElementById("bingoComprobar").value = "";
     crearTableros();
 }
-
 
 // Eventos
 document.getElementById("botonGenerar").addEventListener("click", addNumeroBingo);
 document.getElementById("botonComprobar").addEventListener("click", comprobarBingo);
 document.getElementById("botonComprobarlinea").addEventListener("click", comprobarLinea);
 document.getElementById("botonReiniciarBingo").addEventListener("click", reiniciar);
+
+// Alert personalizado
+/*
+function showAlert(mensaje) {
+    document.getElementById("alertMessage").textContent = mensaje;
+    document.getElementById("customAlert").style.display = "block";
+    document.getElementById("customAlert").style.backgroundColor = "green";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("closeAlertButton").onclick = closeAlert;
+     setTimeout(() => {
+        document.getElementById("customAlert").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }, 5000);
+}
+*/
+
