@@ -1,0 +1,152 @@
+.open-sans{
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+}
+body{
+    background: url("imagenes-png/fondo.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-top: 70px;
+    background-color: #af0107;
+}
+h1{
+    text-align: center;
+    margin-top: 140px;
+    color: #f0e8db;
+    font-size: 60px;
+    text-shadow: 7px 3px 5px black;
+}
+#todo{
+    margin-top: 100px;
+    max-width: 80%;
+    margin: auto;
+
+}
+#divNum{
+    position: relative;
+    width: 25%;
+    height: 25%;
+}
+#borde{
+    position: absolute;
+    width: 100%;
+    top: 143%;
+    left: 61%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+#divNumero{
+    position: absolute;
+    top: 140%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    border: 1px solid #273a1a;
+    background-color: #273a1a;
+    color: #f0e8db;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 500%;
+    font-weight: 700;
+    text-shadow: 5px 5px 5px black;
+    border-radius:100%;
+    width: 65%;
+    height: 269%;
+}
+#numeroMostrado{
+    position: relative;
+    top: -20%;
+    text-align: center;
+}
+#tableros{
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    gap: 4%;
+    margin-top: 10%;
+}
+button{
+    width: 150px;
+    height: 30px;
+    background-color: #273a1a;
+    color: #f0e8db;
+    border: 1px solid #f0e8db;
+    border-radius: 15px;
+}
+input{
+    height: 30px;
+    width: 200px;
+    background-color: #f0e8db;
+    color: #273a1a;
+    border: 3px solid #273a1a;
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+#divGenerar{
+    width: 160px;
+    height: 80px;
+    margin: auto;
+    margin-top: -5%;
+}
+#botonGenerar{
+    width: 130px;
+    height: 80px;
+    font-size: 20px;
+    margin-top: 0%;
+}
+#lineaCarton{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.divComprobar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30%;
+    
+}
+#divReiniciar{
+    margin: auto;
+    margin-top: 5%;
+    width: 150px;
+    height: 30px;
+}
+/* Contenedor de los tableros */
+.tablero {
+    width: 30%;
+    height: 100%;
+    display: grid; /* usamos grid para cuadrícula */
+    grid-template-columns: repeat(9, 1fr); /* 9 columnas */
+    grid-auto-rows: 40px; /* altura de cada fila igual a las bolas */
+    gap: 5px; /* espacio entre bolas */
+    justify-items: center; /* centrar horizontalmente el contenido de cada celda */
+    align-items: center; /* centrar verticalmente */
+   /* padding: 10px;*/
+    box-sizing: border-box;
+}
+
+/* Cada bola */
+.bola {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0e8db;
+    border: 2px solid #273a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+
+/* Bola marcada cuando sale el número */
+.marcada {
+    background-color: #ffe49c;
+    border-color: #ffb700;
+    color: #273a1a;
+}
