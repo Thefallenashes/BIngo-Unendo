@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Bingo</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <h1>Bingo de Unendo</h1>
+    <div id="todo">
+        <div id="tableros">
+        <div id="tablero1" class="tablero"></div>
+                <div id="divNum">
+                    <img src="imagenes-png/borde-completo.png" id="borde">
+                    <div id="divNumero"> <p id="numeroMostrado"></p></div>
+                </div>
+                <div id="tablero2" class="tablero"></div>
+        </div>
+        <div id="divGenerar">
+            <button id="botonGenerar">Sacar número</button>
+        </div>
+        <div id="lineaCarton">
+            <div class="divComprobar">
+                <input type="text" id="lineaComprobar" placeholder="Introduce los números del cartón">
+                <button id="botonComprobarlinea">Comprobar linea</button>
+            </div>
+            <div class="divComprobar">
+                <input type="text" id="bingoComprobar" placeholder="Introduce los números del cartón">
+                <button id="botonComprobar">Comprobar bingo</button>
+            </div>
+        </div>
+        <div id="divReiniciar">
+            <button id="botonReiniciarBingo">Reiniciar Bingo</button>
+        </div>
+    </div>
+    <div id="linea" class="overlay">
+        <div class="popup">
+            <h2>¡LÍNEA!</h2>
+            <img src="imagenes-png/grinch.gif" alt="">
+        </div>
+    </div>
+     <div id="bingo" class="overlay">
+        <div class="popup">
+            <h2>¡BINGO!</h2>
+            <img src="imagenes-png/bingo2.gif">
+        </div>
+    </div>
+    <div id="noBingo" class="overlay fondoRojo">
+        <div class="popup">
+            <h2>¡OH NO!</h2>
+            <img src="imagenes-png/santaTriste.gif">
+            <p>Otra vez será</p>
+        </div>
+    </div>
+    <div id="noLinea" class="overlay fondoRojo">
+        <div class="popup">
+            <h2>¡Vaya!</h2>
+            <img src="imagenes-png/grinchNo.gif">
+            <p>No has hecho línea</p>
+        </div>
+    </div>
+    <script src="bingo.js"></script>
+</body>
+</html>
