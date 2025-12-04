@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #fafafa;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+
+
+/* CANVAS */
+#wheel {
+    border: 5px solid #333;
+    border-radius: 50%;
+}
+
+/* BOTÓN */
+#spin {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Flecha LATERAL DERECHA */
+/* Flecha LATERAL DERECHA con la punta tocando el círculo */
+.arrow {
+    width: 0;
+    height: 0;
+
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 30px solid red; /* Apunta hacia la rueda */
+
+    position: absolute;
+
+    /* La punta toca exactamente el borde del círculo */
+    right: 40px; /* Ajustado para que la punta toque el borde del canvas */
+    rotate: 180deg;
+    top: 40%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+
+.inputs {
+    margin-top: 30px;
+}
+
+textarea {
+    width: 300px;
+    resize: none;
+}
