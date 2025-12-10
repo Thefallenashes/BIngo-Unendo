@@ -11,6 +11,7 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,49 +34,57 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="api-client.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  
+
+<body class="min-h-screen">
+
 
   <main class="container mx-auto px-4 py-8">
     <div id="app">
       <div class="grid grid-cols-1 gap-8">
         <div class="flex flex-col items-center">
-          <button 
-            @click="spin"
-            class="mb-4 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition"
-          >
-            SPIN ROULETTE
-          </button>
+          <button @click="spin" class="mb-4 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition">
+            ¡GIRA LA RULETA! </button>
           <div class="relative">
-            <canvas id="canvas" width="500" height="500" class="border-4 border-gray-800 rounded-full transition-all duration-300"></canvas>
-            <div v-if="selectedOption" class="absolute inset-0 flex items-center justify-center">
-              <div class="bg-white bg-opacity-80 rounded-full p-4 shadow-lg transform transition-all duration-500 animate-pulse">
-                <p class="text-xl font-bold text-center">{{ selectedOption }}</p>
+            <canvas id="canvas" width="500" height="500"
+              class="border-4 border-gray-800 rounded-full transition-all duration-300"></canvas>
+            <!-- Result bubble centered over the wheel interior (fits inside inner circle ~250px diameter) -->
+            <div v-show="selectedOption" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+              <!-- Use a circular box that fits inside the inner roulette circle -->
+              <div class="bg-white bg-opacity-95 rounded-full w-56 h-56 flex flex-col items-center justify-center p-3 shadow-2xl pointer-events-auto">
+                <img src="imagenUnendo.png" alt="Logo" class="h-12 w-auto mb-2 object-contain">
+                <p class="text-2xl font-semibold text-center text-gray-800 px-2">{{ selectedOption }}</p>
               </div>
             </div>
           </div>
         </div>
-        
+
         <div>
 
-          </div>
         </div>
       </div>
+    </div>
     </div>
   </main>
 
   <script>
-    const { createApp, ref, onMounted } = Vue;
+    const {
+      createApp,
+      ref,
+      onMounted
+    } = Vue;
 
     createApp({
       setup() {
-        const options = ref(['INFANTIL','TSEAS','SANIDAD','INFORMÁTICA']);
+        const options = ref(['INFANTIL', 'TSEAS', 'SANIDAD', 'INFORMÁTICA']);
         const newOption = ref('');
         const startAngle = ref(0);
-        const spinTimeout = ref(null);
-        const spinTime = ref(0);
+        const spinStartTime = ref(0);
         const spinTimeTotal = ref(0);
-        const spinAngleStart = ref(0);
+        const initialStartAngle = ref(0);
+        const totalSpinAngle = ref(0);
+        let timeoutId = null;
+        let isAnimating = false;
+        let animationFinished = false;
         const ctx = ref(null);
         const selectedOption = ref('');
         const isSpinning = ref(false);
@@ -99,11 +108,11 @@
           const center = 128;
           const width = 127;
           const frequency = Math.PI * 2 / maxitem;
-          
+
           const red = Math.sin(frequency * item + 2 + phase) * width + center;
           const green = Math.sin(frequency * item + 0 + phase) * width + center;
           const blue = Math.sin(frequency * item + 4 + phase) * width + center;
-          
+
           return RGB2Color(red, green, blue);
         };
 
@@ -132,7 +141,8 @@
 
             ctx.value.strokeStyle = "black";
             ctx.value.lineWidth = 2;
-            ctx.value.font = 'bold 14px Inter, sans-serif';
+            // Increase wheel label font size for better readability
+            ctx.value.font = 'bold 20px Inter, sans-serif';
 
             const arc = Math.PI / (options.value.length / 2);
 
@@ -152,13 +162,13 @@
               ctx.value.shadowBlur = 0;
               ctx.value.shadowColor = "rgb(220,220,220)";
               ctx.value.fillStyle = "black";
-              ctx.value.translate(250 + Math.cos(angle + arc / 2) * textRadius, 
-                            250 + Math.sin(angle + arc / 2) * textRadius);
+              ctx.value.translate(250 + Math.cos(angle + arc / 2) * textRadius,
+                250 + Math.sin(angle + arc / 2) * textRadius);
               ctx.value.rotate(angle + arc / 2 + Math.PI / 2);
               const text = options.value[i];
               ctx.value.fillText(text, -ctx.value.measureText(text).width / 2, 0);
               ctx.value.restore();
-            } 
+            }
 
             // Arrow
             ctx.value.fillStyle = "black";
@@ -175,64 +185,145 @@
           }
         };
 
+        /**
+         * easeOutCubic(t)
+         * Easing function that creates a smooth deceleration effect for the roulette spin.
+         * Formula: 1 - (1-t)³
+         * @param {number} t - Normalized progress value between 0 and 1
+         * @returns {number} Eased progress value (0 to 1), guarantees smooth slowdown
+         * 
+         * This function ensures the roulette spins fast at the start and gradually slows down
+         * before coming to a stop. It prevents animation artifacts by keeping output always
+         * within the valid [0, 1] range, preventing the reverse spin bug.
+         */
+        const easeOutCubic = (t) => {
+          const x = 1 - t;
+          return 1 - (x * x * x);
+        };
+
+        /**
+         * spin()
+         * Initiates the roulette spin animation. Generates random spin duration and rotation 
+         * amount, then animates the wheel with smooth ease-out deceleration.
+         * 
+         * Key responsibilities:
+         * 1. Prevents multiple simultaneous spins (isSpinning guard)
+         * 2. Resets animation state completely for clean spin
+         * 3. Generates random parameters: duration (3-5 sec) and total angle (720-1440 degrees)
+         * 4. Runs animation loop using setTimeout for precise control
+         * 5. Applies easeOutCubic for realistic deceleration effect
+         * 6. Calls stopRotateWheel() when complete to calculate winner
+         * 
+         * Animation flags used:
+         * - isSpinning: prevents user clicks during animation
+         * - isAnimating: controls whether animate() continues
+         * - animationFinished: emergency stop flag (prevents any further animation callbacks)
+         */
         const spin = () => {
           if (isSpinning.value) return;
-          
+
+          animationFinished = false;
+          isAnimating = false;
+          if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+          }
+
           isSpinning.value = true;
           selectedOption.value = '';
-          spinAngleStart.value = Math.random() * 10 + 10;
-          spinTime.value = 0;
-          spinTimeTotal.value = Math.random() * 3 + 5 * 100; // Longer spin time
-          rotateWheel();
+
+          spinTimeTotal.value = Math.random() * 2000 + 3000;
+          totalSpinAngle.value = Math.random() * 720 + 720;
+
+          initialStartAngle.value = startAngle.value;
+          spinStartTime.value = performance.now();
+          isAnimating = true;
+
+          const animate = () => {
+            if (!isAnimating || animationFinished) return;
+
+            const now = performance.now();
+            const elapsed = now - spinStartTime.value;
+            const duration = spinTimeTotal.value;
+
+            if (elapsed >= duration) {
+              const finalAngle = initialStartAngle.value + (totalSpinAngle.value * Math.PI / 180);
+              startAngle.value = finalAngle;
+              drawRouletteWheel();
+
+              animationFinished = true;
+              isAnimating = false;
+              timeoutId = null;
+
+              stopRotateWheel();
+              return;
+            }
+
+            let normalizedProgress = elapsed / duration;
+            normalizedProgress = Math.max(0, Math.min(1, normalizedProgress));
+
+            const easedProgress = easeOutCubic(normalizedProgress);
+
+            const angleChange = totalSpinAngle.value * easedProgress;
+            startAngle.value = initialStartAngle.value + (angleChange * Math.PI / 180);
+
+            drawRouletteWheel();
+
+            if (isAnimating && !animationFinished) {
+              timeoutId = setTimeout(animate, 16);
+            }
+          };
+
+          animate();
         };
 
-        const rotateWheel = () => {
-          spinTime.value += 16; // Smoother animation with higher frame rate
-          if (spinTime.value >= spinTimeTotal.value) {
-            stopRotateWheel();
-            return;
-          }
-          const spinAngle = spinAngleStart.value - improvedEaseOut(spinTime.value, 0, spinAngleStart.value, spinTimeTotal.value);
-          startAngle.value += (spinAngle * Math.PI / 180);
-          drawRouletteWheel();
+        const rotateWheel = () => {};
 
-          spinTimeout.value = setTimeout(rotateWheel, 16); // 60fps for smoother animation
-        };
-
+        /**
+         * stopRotateWheel()
+         * Stops the animation completely and determines the winning option based on the final
+         * roulette position. This function has multiple safety layers to prevent ghost animations.
+         * 
+         * Process:
+         * 1. Sets animationFinished=true as emergency stop (prevents any setTimeout callbacks)
+         * 2. Disables isAnimating flag
+         * 3. Clears any pending timeouts
+         * 4. Unlocks spinner (isSpinning=false) to allow next spin
+         * 5. Calculates winner by:
+         *    - Normalizing current angle to [0, 2π)
+         *    - Converting to degrees with offset
+         *    - Determining which option section aligns with the pointer
+         * 6. Updates selectedOption to display the winner
+         * 
+         * Safety: Uses 3 separate mechanisms (animationFinished, isAnimating, clearTimeout)
+         * to ensure no animation callbacks occur after execution.
+         */
         const stopRotateWheel = () => {
-          clearTimeout(spinTimeout.value);
-          const degrees = startAngle.value * 180 / Math.PI + 90;
-          const arcd = 360 / options.value.length;
-          const index = Math.floor((360 - degrees % 360) / arcd);
-          console.log("Winner: " + options.value[index]);
-          
-          // Show selected option in the middle
-          selectedOption.value = options.value[index];
-          isSpinning.value = false;
-        };
+          animationFinished = true;
+          isAnimating = false;
 
-        const easeOut = (t, b, c, d) => {
-          const ts = (t /= d) * t;
-          const tc = ts * t;
-          return b + c * (tc * ts + -6 * ts * ts + 15 * tc + -20 * ts + 10 * t);
-        };
-        
-        // Improved easing function for smoother animation
-        const improvedEaseOut = (t, b, c, d) => {
-          if ((t /= d) < 1/2.75) {
-            return c * (7.5625 * t * t) + b;
-          } else if (t < 2/2.75) {
-            return c * (7.5625 * (t -= 1.5/2.75) * t + 0.75) + b;
-          } else if (t < 2.5/2.75) {
-            return c * (7.5625 * (t -= 2.25/2.75) * t + 0.9375) + b;
-          } else {
-            return c * (7.5625 * (t -= 2.625/2.75) * t + 0.984375) + b;
+          if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
           }
+
+          isSpinning.value = false;
+
+          let normalized = startAngle.value % (2 * Math.PI);
+          if (normalized < 0) normalized += 2 * Math.PI;
+
+          const degrees = normalized * 180 / Math.PI + 90;
+          const arcd = 360 / options.value.length;
+          let index = Math.floor((360 - degrees % 360) / arcd);
+          index = ((index % options.value.length) + options.value.length) % options.value.length;
+
+          selectedOption.value = options.value[index];
+          console.log("Winner: " + selectedOption.value);
         };
 
         const generatePrizes = async () => {
           if (!themeInput.value || isGenerating.value) return;
-          
+
           try {
             isGenerating.value = true;
             const response = await apiClient.suggestPrizes(themeInput.value, 5);
@@ -243,12 +334,12 @@
             isGenerating.value = false;
           }
         };
-        
+
         const addSuggestedPrize = (prize) => {
           options.value.push(prize);
           drawRouletteWheel();
         };
-        
+
         const checkApiStatus = async () => {
           try {
             apiStatus.value = await apiClient.checkHealth();
@@ -257,10 +348,10 @@
             console.error('API status check failed:', error);
           }
         };
-        
+
         onMounted(() => {
           drawRouletteWheel();
-          checkApiStatus();
+          // checkApiStatus(); // Uncomment if API server is running
         });
 
         return {
@@ -282,4 +373,5 @@
     }).mount('#app');
   </script>
 </body>
+
 </html>
