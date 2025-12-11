@@ -1,0 +1,99 @@
+.open-sans{
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+}
+body{
+    background: url("imagenes-png/fondo.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-top: 70px;
+    background-color: #af0107;
+}
+h1{
+    text-align: center;
+    margin-top: 150px;
+    color: #f0e8db;
+    font-size: 60px;
+    text-shadow: 7px 3px 5px black;
+}
+#todo{
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-left: 200px;
+}
+/*#divNUm{
+    width: 300px;
+    height: 300px;
+    text-align: center;
+}*/
+#numeroMostrado{
+    text-align: center;
+    margin-top: -120px;
+    margin-bottom: -120px;
+    margin-left: 50px;
+    border: 1px solid #273a1a;
+    background-color: #273a1a;
+    color: #f0e8db;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 500%;
+    font-weight: 700;
+    text-shadow: 5px 5px 5px black;
+    border-radius:100%;
+    padding: 71px;
+    height: 100px;
+    width: 100px;
+}
+.imgBorde{
+    width: 350px;
+}
+
+#tableros{
+    height: 500px;
+    display: flex;
+    gap: 4%;
+    margin-bottom:px;
+}
+.tablero{
+    width: 25%;
+    height: 100%;
+    border: 2px solid black;
+}
+button{
+    width: 150px;
+    height: 30px;
+    background-color: #273a1a;
+    color: #f0e8db;
+    border: 1px solid #f0e8db;
+    border-radius: 15px;
+}
+input{
+    height: 30px;
+    width: 200px;
+    background-color: #f0e8db;
+    color: #273a1a;
+    border: 3px solid #273a1a;
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+#botonGenerar{
+    width: 130px;
+    height: 80px;
+    margin-left: 107px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+#divComprobar{
+    margin-top: 200px;
+    margin-right: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+}
+#botonReiniciarBingo{
+    margin-top: 20px;
+}
